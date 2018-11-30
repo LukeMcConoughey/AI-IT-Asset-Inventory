@@ -2,12 +2,12 @@ import numpy as np
 import pandas as pd
 import keras
 from keras.models import Sequential, load_model
-from keras.layers import Dense
+from keras.layers import Dense, Dropout
 
 
 #import data files, dataset is known knowns and testset is unknowns to be calculated
-dataset = pd.read_csv('iplist3train.csv', delimiter = ',')
-testset = pd.read_csv('iplist2unkowns.csv', delimiter = ',')
+dataset = pd.read_csv('KnownIPList.csv', delimiter = ',')
+testset = pd.read_csv('UnknownIPList.csv', delimiter = ',')
 x = dataset.iloc[:, 1:5].values
 y = dataset.iloc[:, 0].values
 z = testset.iloc[:, 0:4].values
@@ -33,6 +33,7 @@ x_test = sc.transform(x_test)
 #define the neural network with input, hidden layer, and output to match agency matrix
 classifier = Sequential()
 classifier.add(Dense(activation="relu", input_dim=4, units=547, kernel_initializer="uniform")) 
+classifier.add(Dropout(0.2))
 classifier.add(Dense(activation="relu", units=547, kernel_initializer="uniform")) 
 classifier.add(Dense(activation="softmax", units=16, kernel_initializer="uniform")) 
 
